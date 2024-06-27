@@ -15,10 +15,12 @@ int StringCalculator::add(const std::string& input) {
 
     while (std::getline(ss, token, delimiter)) {
         int number = std::stoi(token);
+        // Combine conditions to reduce complexity
         if (number < 0) {
             throw std::runtime_error("Negatives not allowed");
+        } else if (number <= 1000) {
+            sum += number;
         }
-        sum += number;
     }
 
     return sum;
