@@ -10,7 +10,7 @@ public:
 
 private:
     std::vector<int> Tokenize(const std::string& input);
-    void ProcessToken(std::string& token, std::vector<int>& tokens);
+    void ProcessToken(std::string& token, std::vector<int>& tokens, char delimiter);
     void ReplaceNewlinesWithCommas(std::string& token);
     void ProcessNumber(const std::string& number, std::vector<int>& tokens);
     int SumNumbers(const std::vector<int>& numbers) const;
