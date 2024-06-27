@@ -7,14 +7,11 @@ int StringCalculator::add(const std::string& input) {
     }
 
     std::stringstream ss(input);
-    int number;
     int sum = 0;
+    char delimiter = ',';
 
-    while (ss >> number) {
-        sum += number;
-        if (ss.peek() == ',') {
-            ss.ignore();
-        }
+    while (ss >> sum) {
+        ss.ignore(); // Ignore the delimiter
     }
 
     return sum;
