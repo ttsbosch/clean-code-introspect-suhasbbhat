@@ -10,11 +10,11 @@ public:
 
 private:
     std::vector<int> Tokenize(const std::string& input);
-    void ProcessToken(std::string& token, std::vector<int>& tokens, char delimiter);
+    char DetectAndProcessCustomDelimiter(std::string& input);
+    std::vector<int> SplitAndConvertToNumbers(const std::string& input, char delimiter);
     void ReplaceNewlinesWithCommas(std::string& token);
-    void ProcessNumber(const std::string& number, std::vector<int>& tokens);
+    void ValidateAndAddNumber(int number, std::vector<int>& tokens);
     int SumNumbers(const std::vector<int>& numbers) const;
-    void ValidateNumber(int number) const;
 };
 
 #endif // STRINGCALCULATOR_H
