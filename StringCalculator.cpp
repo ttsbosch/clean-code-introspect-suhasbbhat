@@ -29,7 +29,7 @@ int StringCalculator::SumNumbers(const std::string& numbers, const std::string& 
     return sum;
 }
 
-int StringCalculator::Add(std::string numbers) {
+int StringCalculator::add(std::string numbers) {
     if (numbers.empty()) {
         return 0;
     }
