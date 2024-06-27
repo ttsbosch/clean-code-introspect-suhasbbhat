@@ -2,9 +2,13 @@
 #include <sstream>
 #include <string>
 #include <stdexcept> // For std::runtime_error
+#include <algorithm> // For std::replace
 
 int StringCalculator::add(const std::string& input) {
-    std::istringstream ss(input);
+    std::string modifiedInput = input;
+    std::replace(modifiedInput.begin(), modifiedInput.end(), '\n', ','); // Replace newline with comma
+
+    std::istringstream ss(modifiedInput);
     std::string token;
     int sum = 0;
     char delimiter = ',';
