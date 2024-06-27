@@ -4,11 +4,8 @@
 #include <algorithm>
 #include <vector>
 
-int StringCalculator::Add(std::string numbers) { // Make a copy for modification
-    if (numbers.empty()) {
-        return 0;
-    }
-
+// Extracts the delimiter from the input string and modifies the string to remove the delimiter declaration
+std::string StringCalculator::ExtractDelimiter(std::string& numbers) {
     std::string delimiter = ",";
     if (numbers.substr(0, 2) == "//") {
         size_t delimiterStart = numbers.find("//") + 2;
@@ -16,10 +13,11 @@ int StringCalculator::Add(std::string numbers) { // Make a copy for modification
         delimiter = numbers.substr(delimiterStart, delimiterEnd - delimiterStart);
         numbers.erase(0, delimiterEnd + 1);
     }
+    return delimiter;
+}
 
-    // Replace newlines with a comma, assuming delimiter processing can handle it
-    std::replace(numbers.begin(), numbers.end(), '\n', ',');
-
+// Sums the numbers in the string, using the provided delimiter
+int StringCalculator::SumNumbers(const std::string& numbers, const std::string& delimiter) {
     std::vector<std::string> tokens = Tokenize(numbers, delimiter);
     int sum = 0;
     for (const auto& token : tokens) {
@@ -28,9 +26,15 @@ int StringCalculator::Add(std::string numbers) { // Make a copy for modification
             sum += num;
         }
     }
-
-    // Assuming negative number validation is desired at the end
-    // ValidateNegatives(parsedNumbers); // This requires collecting parsedNumbers
-
     return sum;
+}
+
+int StringCalculator::Add(std::string numbers) {
+    if (numbers.empty()) {
+        return 0;
+    }
+
+    std::string delimiter = ExtractDelimiter(numbers);
+    std::replace(numbers.begin(), numbers.end(), '\n', ',');
+    return SumNumbers(numbers, delimiter);
 }
