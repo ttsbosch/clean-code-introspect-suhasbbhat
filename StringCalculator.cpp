@@ -15,19 +15,28 @@ std::vector<int> StringCalculator::Tokenize(const std::string& input) {
     std::vector<int> tokens;
     std::istringstream stream(input);
     std::string token;
+    char delimiter = ',';
 
-    while (std::getline(stream, token, ',')) {
-        ProcessToken(token, tokens);
+    if (input.rfind("//", 0) == 0) {
+        size_t newlinePos = input.find('\n');
+        if (newlinePos != std::string::npos) {
+            delimiter = input[2];
+            stream.str(input.substr(newlinePos + 1));
+        }
+    }
+
+    while (std::getline(stream, token, delimiter)) {
+        ProcessToken(token, tokens, delimiter);
     }
 
     return tokens;
 }
 
-void StringCalculator::ProcessToken(std::string& token, std::vector<int>& tokens) {
+void StringCalculator::ProcessToken(std::string& token, std::vector<int>& tokens, char delimiter) {
     ReplaceNewlinesWithCommas(token);
     std::istringstream tokenStream(token);
     std::string number;
-    while (std::getline(tokenStream, number, ',')) {
+    while (std::getline(tokenStream, number, delimiter)) {
         ProcessNumber(number, tokens);
     }
 }
