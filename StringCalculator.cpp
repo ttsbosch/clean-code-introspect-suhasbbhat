@@ -1,6 +1,7 @@
 #include "StringCalculator.h"
 #include <sstream>
 #include <string>
+#include <stdexcept> // For std::runtime_error
 
 int StringCalculator::add(const std::string& input) {
     std::istringstream ss(input);
@@ -9,7 +10,11 @@ int StringCalculator::add(const std::string& input) {
     char delimiter = ',';
 
     while (std::getline(ss, token, delimiter)) {
-        sum += std::stoi(token);
+        int number = std::stoi(token);
+        if (number < 0) {
+            throw std::runtime_error("Negatives not allowed");
+        }
+        sum += number;
     }
 
     return sum;
