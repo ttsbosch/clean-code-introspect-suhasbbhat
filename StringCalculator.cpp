@@ -12,51 +12,55 @@ int StringCalculator::Add(const std::string& input) {
 }
 
 std::vector<int> StringCalculator::Tokenize(const std::string& input) {
-    std::vector<int> tokens;
-    std::istringstream stream(input);
-    std::string token;
-    char delimiter = ',';
+    std::string processedInput = input;
+    char delimiter = DetectAndProcessCustomDelimiter(processedInput);
 
+    return SplitAndConvertToNumbers(processedInput, delimiter);
+}
+
+char StringCalculator::DetectAndProcessCustomDelimiter(std::string& input) {
+    char delimiter = ',';
     if (input.rfind("//", 0) == 0) {
         size_t newlinePos = input.find('\n');
         if (newlinePos != std::string::npos) {
             delimiter = input[2];
-            stream.str(input.substr(newlinePos + 1));
+            input = input.substr(newlinePos + 1);
+        }
+    }
+    return delimiter;
+}
+
+std::vector<int> StringCalculator::SplitAndConvertToNumbers(const std::string& input, char delimiter) {
+    std::vector<int> tokens;
+    std::istringstream stream(input);
+    std::string token;
+
+    while (std::getline(stream, token, delimiter)) {
+        ReplaceNewlinesWithCommas(token);
+        std::istringstream tokenStream(token);
+        std::string number;
+        while (std::getline(tokenStream, number, ',')) {
+            int num = std::stoi(number);
+            ValidateAndAddNumber(num, tokens);
         }
     }
 
-    while (std::getline(stream, token, delimiter)) {
-        ProcessToken(token, tokens, delimiter);
-    }
-
     return tokens;
-}
-
-void StringCalculator::ProcessToken(std::string& token, std::vector<int>& tokens, char delimiter) {
-    ReplaceNewlinesWithCommas(token);
-    std::istringstream tokenStream(token);
-    std::string number;
-    while (std::getline(tokenStream, number, delimiter)) {
-        ProcessNumber(number, tokens);
-    }
 }
 
 void StringCalculator::ReplaceNewlinesWithCommas(std::string& token) {
     std::replace(token.begin(), token.end(), '\n', ',');
 }
 
-void StringCalculator::ProcessNumber(const std::string& number, std::vector<int>& tokens) {
-    int num = std::stoi(number);
-    ValidateNumber(num);
-    if (num <= 1000) tokens.push_back(num);
+void StringCalculator::ValidateAndAddNumber(int number, std::vector<int>& tokens) {
+    if (number < 0) {
+        throw std::runtime_error("Negatives not allowed");
+    }
+    if (number <= 1000) {
+        tokens.push_back(number);
+    }
 }
 
 int StringCalculator::SumNumbers(const std::vector<int>& numbers) const {
     return std::accumulate(numbers.begin(), numbers.end(), 0);
-}
-
-void StringCalculator::ValidateNumber(int number) const {
-    if (number < 0) {
-        throw std::runtime_error("Negatives not allowed");
-    }
 }
