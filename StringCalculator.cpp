@@ -1,4 +1,5 @@
 #include "StringCalculator.h"
+#include <sstream>
 
 int StringCalculator::add(const std::string& input) {
     // If input is empty, return 0
