@@ -5,4 +5,3 @@ public:
     int add(const std::string& input);
 };
 
-#endif
