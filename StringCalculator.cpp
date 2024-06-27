@@ -1,25 +1,40 @@
 #include "StringCalculator.h"
 #include <sstream>
-#include <string>
-#include <stdexcept> // For std::runtime_error
-#include <algorithm> // For std::replace
+#include <stdexcept>
+#include <algorithm>
 
-int StringCalculator::add(const std::string& input) {
-    std::string modifiedInput = input;
-    std::replace(modifiedInput.begin(), modifiedInput.end(), '\n', ','); // Replace newline with comma
+int StringCalculator::Add(const std::string& numbers) {
+    if (numbers.empty()) {
+        return 0;
+    }
 
-    std::istringstream ss(modifiedInput);
+    // Determine delimiters
+    std::string delimiter = ",";
+    size_t delimiterStart = numbers.find("//");
+    if (delimiterStart != std::string::npos) {
+        delimiterStart += 2;
+        size_t delimiterEnd = numbers.find("\n", delimiterStart);
+        delimiter = numbers.substr(delimiterStart, delimiterEnd - delimiterStart);
+        numbers.erase(0, delimiterEnd + 1);
+    }
+
+    // Replace newlines with delimiter
+    std::replace(numbers.begin(), numbers.end(), '\n', delimiter.front());
+
+    // Tokenize input string based on delimiters
+    std::istringstream ss(numbers);
     std::string token;
     int sum = 0;
-    char delimiter = ',';
 
-    while (std::getline(ss, token, delimiter)) {
-        int number = std::stoi(token);
-        // Combine conditions to reduce complexity
-        if (number < 0) {
-            throw std::runtime_error("Negatives not allowed");
-        } else if (number <= 1000) {
-            sum += number;
+    while (std::getline(ss, token, delimiter.front())) {
+        int num = std::stoi(token);
+
+        if (num < 0) {
+            throw std::runtime_error("Negatives not allowed: " + token);
+        }
+
+        if (num <= 1000) {
+            sum += num;
         }
     }
 
