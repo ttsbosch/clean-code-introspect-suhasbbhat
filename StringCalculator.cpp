@@ -1,6 +1,7 @@
 #include "StringCalculator.h"
 #include <sstream>
 #include <algorithm>
+#include <numeric>
 
 int StringCalculator::add(const std::string& input) {
     if (input.empty()) {
