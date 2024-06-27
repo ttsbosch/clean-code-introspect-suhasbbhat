@@ -6,11 +6,12 @@
 
 class StringCalculator {
 public:
-    int Add(const std::string& numbers);
+    int Add(std::string numbers);
 
 private:
-    std::vector<std::string> Tokenize(const std::string& input, const std::string& delimiters);
-    void ValidateNegatives(const std::vector<int>& numbers);
+    std::string ExtractDelimiter(std::string& numbers);
+    int SumNumbers(const std::string& numbers, const std::string& delimiter);
+    std::vector<std::string> Tokenize(const std::string& input, const std::string& delimiter);
 };
 
 #endif // STRINGCALCULATOR_H
