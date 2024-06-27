@@ -1,24 +1,15 @@
 #include "StringCalculator.h"
 #include <sstream>
+#include <string>
 
 int StringCalculator::add(const std::string& input) {
-    if (input.empty()) {
-        return 0;
-    }
-
-    std::stringstream ss(input);
+    std::istringstream ss(input);
+    std::string token;
     int sum = 0;
     char delimiter = ',';
-    int number;
 
-    // Read numbers separated by commas
-    while (ss >> number) {
-        sum += number;
-
-        // Check for comma and skip it
-        if (ss.peek() == delimiter) {
-            ss.ignore();
-        }
+    while (std::getline(ss, token, delimiter)) {
+        sum += std::stoi(token);
     }
 
     return sum;
