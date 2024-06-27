@@ -18,4 +18,4 @@ int StringCalculator::add(const std::string& input) {
         if (ss.peek() == ',') {
             ss.ignore();
         }
-}
+    }
